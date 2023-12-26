@@ -12,12 +12,12 @@
     <ProjectReference Include="..\utils\utils.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="Database">
-      <ReferenceSourceTarget></ReferenceSourceTarget>
+    <ProjectReference Include="..\Database\Database.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SoapCore" Version="1.1.0.39" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>

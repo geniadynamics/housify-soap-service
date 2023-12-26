@@ -3,17 +3,21 @@
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSoapCore();
-builder.Services.AddSingleton<ICalculatorService, CalculatorService>();
+
+builder.Services.AddSingleton<ICryptoRateService, CryptoRateService>();
 
 var app = builder.Build();
 
 app.UseRouting();
 
+// Database initialization
+await Data.DataBase.Init();
+
 #pragma warning disable ASP0014
-app.UseEndpoints(e =>
+app.UseEndpoints(endpoints =>
 {
-    e.UseSoapEndpoint<ICalculatorService>(
-        "/CalculatorService.svc",
+    endpoints.UseSoapEndpoint<ICryptoRateService>(
+        "/CryptoRateService.svc",
         new SoapEncoderOptions(),
         SoapSerializer.DataContractSerializer
     );
