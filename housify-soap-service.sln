@@ -5,7 +5,7 @@ VisualStudioVersion = 25.0.1706.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "service", "service\service.csproj", "{5E4503A5-19C2-4F06-BEA0-C679F811A862}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "database", "Database\Database.csproj", "{EB37C603-ED09-4AEC-B4ED-5720F320B32F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "database", "database\database.csproj", "{EB37C603-ED09-4AEC-B4ED-5720F320B32F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "utils", "utils\utils.csproj", "{D561CFDA-9DCC-4F96-AADE-9C7CA5737D23}"
 EndProject
