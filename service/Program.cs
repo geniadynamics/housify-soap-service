@@ -1,4 +1,5 @@
-﻿using SoapCore;
+﻿using System.Reflection;
+using SoapCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,12 @@ builder.Services.AddSingleton<ICryptoRateService, CryptoRateService>();
 var app = builder.Build();
 
 app.UseRouting();
+
+
+// Optionally load variables from a .env file.
+utils.EnvironmentVariablesLoader.Load(
+    (Environment.GetEnvironmentVariable("SOAP_PROJ_ROOT") ?? "") + "/service/.env"
+);
 
 // Database initialization
 await Data.DataBase.Init();

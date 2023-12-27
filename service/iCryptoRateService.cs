@@ -8,9 +8,12 @@ public interface ICryptoRateService
 {
     [OperationContract]
     Task<CryptoRateResponse> GetCryptoRate(string symbol);
+
+    [OperationContract]
+    Task<List<CryptoRateResponse>> GetAllCryptoRates();
 }
 
-[DataContract(Namespace = "http://localhost:5262")]
+[DataContract(Namespace = "http://localhost:5000")]
 public class CryptoRateResponse
 {
     [DataMember]

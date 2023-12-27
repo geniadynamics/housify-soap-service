@@ -7,69 +7,71 @@ namespace Data;
 /// </summary>
 public static class DataBase
 {
-    #region bakup_path
+    #region backup_path
 
     /// <summary>
     ///     Path for data definition files.
-    ///     Absolute paths, This Files will be stored on the DBMS(postgres) server.
+    ///     Loaded from environment variable 'BackupDdlPath'.
     /// </summary>
-    private static string? backupDdlPath = "/home/db/dev/repo_g06/Data/dataDefinition/";
+    private static readonly string? backupDdlPath =
+        (Environment.GetEnvironmentVariable("SOAP_PROJ_ROOT") +
+        "/data/") ?? "";
 
     /// <summary>
     ///     Path for database backup files.
-    ///     Absolute paths, This Files will be stored on the DBMS(postgres) server.
+    ///     Loaded from environment variable 'BackupDbPath'.
     /// </summary>
-    private static string? backupDbPath = "/home/db/dev/repo_g06/Data/backup/";
+    private static readonly string? backupDbPath =
+        (Environment.GetEnvironmentVariable("SOAP_PROJ_ROOT") +
+        "/data/backup/") ?? "";
 
     #endregion
 
     #region connection_rules
 
+    /// <summary> Hostname for postgresql server. </summary>
+    private static readonly string Host =
+        Environment.GetEnvironmentVariable("HOST") ?? "localhost";
+
+    /// <summary> Username for postgresql server. </summary>
+    private static readonly string User =
+        Environment.GetEnvironmentVariable("USERDB") ?? "postgres";
+
+    /// <summary> Database name. </summary>
+    private static readonly string DbName =
+        Environment.GetEnvironmentVariable("DBNAME") ?? "crypto";
+
+    /// <summary> Admin Database name. </summary>
+    private static readonly string AdminDbName =
+        Environment.GetEnvironmentVariable("ADMIN_DBNAME") ?? "postgres";
+
     /// <summary>
-    ///     Connection String to system's database (currently using postgres 14+).
-    ///     Any Change to the Database connection rules will require a new
-    ///     binary file with updated values as this constants are not intended
-    ///     to change during runtime.
+    ///     Password for postgresql server.
     /// </summary>
-    private const string ConnString =
+    private static readonly string PassWord =
+        Environment.GetEnvironmentVariable("PWD") ?? "defaultPassword";
+
+    /// <summary>
+    ///     Network Port for postgresql server.
+    /// </summary>
+    private static readonly string Port =
+        Environment.GetEnvironmentVariable("PORT") ?? "5432";
+
+    /// <summary>
+    ///     Connection String to system's database.
+    ///     Loaded from environment variables.
+    /// </summary>
+    private static readonly string ConnString =
         $@"Server={Host};Username={User};Database={DbName};Port={Port};
         Password={PassWord};SSLMode=Prefer";
 
     /// <summary>
-    ///     Connection String to system's database as an administrator for the
-    ///     DBMS(currently using postgres 14+).
-    ///     Any Change to the Database connection rules will require a new
-    ///     binary file with updated values as this constants are not intended
-    ///     to change during runtime.
+    ///     Connection String to system's database as an administrator.
+    ///     Loaded from environment variables.
     /// </summary>
-    private const string AdminConnString =
+    private static readonly string AdminConnString =
         $@"Server={Host};Username={User};Database={AdminDbName};Port={Port};
         Password={PassWord};SSLMode=Prefer";
-
-    /// <summary> Hostname for postgresql server. </summary>
-    private const string Host = "localhost";
-
-    /// <summary> Username for postgresql server. </summary>
-    private const string User = "postgres";
-
-    /// <summary> Database name. </summary>
-    private const string DbName = "ipcagym";
-
-    /// <summary> Admin Database name. </summary>
-    private const string AdminDbName = "postgres";
-
-    //! TODO change auth method!
-
-    /// <summary>
-    ///     Password for postgresql server (needless to say, protect this src
-    ///     file as well as the generated code).
-    /// </summary>
-    private const string PassWord = "IpcaGymPa$$word!";
-
-    /// <summary>
-    ///     Network Port for postgresql server, other ports may be blocked...
-    /// </summary>
-    private const string Port = "5432";
 
     #endregion
 
@@ -346,7 +348,7 @@ public static class DataBase
         try
         {
             // Data definition language (.ddl) file for IpcaGym.
-            var ddl = await File.ReadAllTextAsync($"{backupDdlPath}IpcaGym.ddl");
+            var ddl = await File.ReadAllTextAsync($"{backupDdlPath}/{DbName}.sql");
 
             // !TODO duplicate constrains produce an error.
             // Execute all the commands previously defined.
@@ -403,10 +405,8 @@ public static class DataBase
 
             if (queryReturn == DbName.ToLower())
             {
-                // Ensure database tables.
-                // !TODO change .ddl file -> Constrains cannot be redefined
-                // without a drop.
-                // await ensureDataBaseTables();
+
+                await EnsureDataBaseTables();
 
                 return;
             }
