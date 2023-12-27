@@ -4,7 +4,7 @@ namespace utils;
 /// <summary>
 ///     File Class
 /// </summary>
-public static class File
+public static class FileHandler
 {
     /// <summary>
     ///     write text to a file asynchronously.
