@@ -35,8 +35,11 @@ jobs:
 
     - name: Install dependencies
       run: dotnet restore
+    - name: Install dependencies 1
       run: dotnet restore /home/runner/work/housify-soap-service/housify-soap-service/database/database.csproj
+    - name: Install dependencies 2
       run: dotnet restore /home/runner/work/housify-soap-service/housify-soap-service/utils/utils.csproj
+    - name: Install dependencies 3
       run: dotnet restore /home/runner/work/housify-soap-service/housify-soap-service/service/service.csproj
 
     - name: Build
