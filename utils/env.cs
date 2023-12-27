@@ -1,30 +1,40 @@
 ﻿using System;
-namespace utils;
-
-using System;
 using System.IO;
 
-public class EnvironmentVariablesLoader
+namespace utils
 {
-    public static void Load(string filePath)
+    /// <summary>
+    /// Utility class for loading environment variables from a file.
+    /// </summary>
+    public class EnvironmentVariablesLoader
     {
-        if (!File.Exists(filePath))
+        /// <summary>
+        /// Loads environment variables from the specified file path.
+        /// </summary>
+        /// <param name="filePath">The path to the .env file.</param>
+        public static void Load(string filePath)
         {
-            utils.Logger.Log.Info(
-                "Proceding without loading local .env variables file."
-            );
-            return;
-        }
-
-        foreach (var line in File.ReadAllLines(filePath))
-        {
-            var parts = line.Split('=', 2);
-            if (parts.Length != 2)
+            // Check if the file exists.
+            if (!File.Exists(filePath))
             {
-                throw new FormatException("Invalid environment variable format");
+                // Log a message and proceed without loading local .env variables file.
+                utils.Logger.Log.Info("Proceeding without loading local .env variables file.");
+                return;
             }
 
-            Environment.SetEnvironmentVariable(parts[0].Trim(), parts[1].Trim());
+            // Read each line from the file and set environment variables.
+            foreach (var line in File.ReadAllLines(filePath))
+            {
+                // Split the line into key and value parts.
+                var parts = line.Split('=', 2);
+                if (parts.Length != 2)
+                {
+                    throw new FormatException("Invalid environment variable format");
+                }
+
+                // Set the environment variable.
+                Environment.SetEnvironmentVariable(parts[0].Trim(), parts[1].Trim());
+            }
         }
     }
 }
