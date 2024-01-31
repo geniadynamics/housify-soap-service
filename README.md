@@ -1,3 +1,6 @@
+## THIS HAS NOTHING TO DO WITH THE PROJECT
+### CREATED DUE TO ACADEMIC REQUIREMENTS ONLY
+
 ### Academic work
 
 - Diogo Antunes (a21144@alunos.ipca.pt)
